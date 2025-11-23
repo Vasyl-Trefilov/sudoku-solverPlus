@@ -27,7 +27,7 @@ export default function SudokuReceiver() {
 
   const sendRequest = async () => {
     try {
-      const res = await axios.post("http://162.55.58.143:3136/sudokuPlus", {
+      const res = await axios.post("/api/sudokuPlus", {
         rules: rules,
       });
 
