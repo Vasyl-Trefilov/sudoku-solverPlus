@@ -5,7 +5,7 @@ export default function SudokuReceiver() {
   const [activeCell, setActiveCell] = useState({ rowIndex: -1, cellIndex: -1 });
   const [moreLessMode, setMoreLessMode] = useState(false);
   const [secondClick, setSecondClick] = useState(false);
-  const [moreMode, setMoreMode] = useState(false);
+  const [moreMode, setMoreMode] = useState(true);
   const [lessMode, setLessMode] = useState(false);
   const [errorText, setErrorText] = useState("");
   const [rules, setRules] = useState([]);
@@ -27,7 +27,7 @@ export default function SudokuReceiver() {
 
   const sendRequest = async () => {
     try {
-      const res = await axios.post("http://localhost:3136/sudokuPlus", {
+      const res = await axios.post("http://162.55.58.143:3136/sudokuPlus", {
         rules: rules,
       });
 
@@ -121,7 +121,7 @@ export default function SudokuReceiver() {
           Futuristic Sudoku+ Solver
         </h1>
 
-        <div style={{ display: "flex", gap: 25, width: "100%" }}>
+        <div style={{ display: "flex", gap: 25 }}>
           {/* LEFT SIDE */}
           <div style={{ flex: 1 }}>
             <div
