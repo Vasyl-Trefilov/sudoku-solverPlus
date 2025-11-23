@@ -5,7 +5,7 @@ export default function SudokuReceiver() {
   const [activeCell, setActiveCell] = useState({ rowIndex: -1, cellIndex: -1 });
   const [moreLessMode, setMoreLessMode] = useState(false);
   const [secondClick, setSecondClick] = useState(false);
-  const [moreMode, setMoreMode] = useState(true);
+  const [moreMode, setMoreMode] = useState(false);
   const [lessMode, setLessMode] = useState(false);
   const [errorText, setErrorText] = useState("");
   const [rules, setRules] = useState([]);
@@ -42,7 +42,6 @@ export default function SudokuReceiver() {
   };
 
   const setNewNumber = (newNumber) => {
-    if (activeCell.rowIndex === -1 || activeCell.cellIndex === -1) return;
     setRules((prev) => [
       ...prev,
       [activeCell.rowIndex, activeCell.cellIndex, "=", newNumber + 1, 0],
@@ -55,6 +54,31 @@ export default function SudokuReceiver() {
         : (updated[activeCell.rowIndex][activeCell.cellIndex] = newNumber + 1);
       return updated;
     });
+  };
+
+  const clearAll = () => {
+    setActiveCell({ rowIndex: -1, cellIndex: -1 });
+    setRules([]);
+    setRequestSudoku(
+      Array(6)
+        .fill(0)
+        .map(() => Array(6).fill(0))
+    );
+    setResponse(
+      Array(6)
+        .fill(0)
+        .map(() => Array(6).fill(0))
+    );
+    setOldSudoku(
+      Array(6)
+        .fill(0)
+        .map(() => Array(6).fill(0))
+    );
+    setErrorText("");
+    setMoreLessMode(false);
+    setSecondClick(false);
+    setMoreMode(true);
+    setLessMode(false);
   };
 
   const bg = "linear-gradient(135deg, #05010f, #0c0020, #150030)";
@@ -364,6 +388,24 @@ export default function SudokuReceiver() {
               }}
             >
               Find Solution
+            </div>
+            <div
+              onClick={clearAll}
+              style={{
+                marginTop: 15,
+                padding: "14px 10px",
+                borderRadius: 18,
+                background: "rgba(255,80,80,0.15)",
+                cursor: "pointer",
+                textAlign: "center",
+                fontWeight: 700,
+                fontSize: 18,
+                border: "1px solid rgba(255,80,80,0.6)",
+                boxShadow: "0 0 18px rgba(255,80,80,0.5)",
+                color: "#ff8080",
+              }}
+            >
+              Clear Board
             </div>
 
             {errorText && (
