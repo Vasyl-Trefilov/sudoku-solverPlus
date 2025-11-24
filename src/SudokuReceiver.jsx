@@ -42,16 +42,43 @@ export default function SudokuReceiver() {
   };
 
   const setNewNumber = (newNumber) => {
-    setRules((prev) => [
-      ...prev,
-      [activeCell.rowIndex, activeCell.cellIndex, "=", newNumber + 1, 0],
-    ]);
-    if (activeCell.rowIndex === -1) return;
+    if (activeCell.rowIndex === -1 || activeCell.cellIndex === -1) return;
+    const value = newNumber + 1;
     setRequestSudoku((prev) => {
       const updated = prev.map((row) => [...row]);
-      updated[activeCell.rowIndex][activeCell.cellIndex] === newNumber + 1
-        ? (updated[activeCell.rowIndex][activeCell.cellIndex] = 0)
-        : (updated[activeCell.rowIndex][activeCell.cellIndex] = newNumber + 1);
+      const currentValue = updated[activeCell.rowIndex][activeCell.cellIndex];
+      if (currentValue === value) {
+        updated[activeCell.rowIndex][activeCell.cellIndex] = 0;
+        setRules((prev) =>
+          prev.filter(
+            ([r1, c1, op]) =>
+              !(
+                r1 === activeCell.rowIndex &&
+                c1 === activeCell.cellIndex &&
+                op === "="
+              )
+          )
+        );
+
+        return updated;
+      }
+      updated[activeCell.rowIndex][activeCell.cellIndex] = value;
+      setRules((prev) => {
+        const filtered = prev.filter(
+          ([r1, c1, op]) =>
+            !(
+              r1 === activeCell.rowIndex &&
+              c1 === activeCell.cellIndex &&
+              op === "="
+            )
+        );
+
+        return [
+          ...filtered,
+          [activeCell.rowIndex, activeCell.cellIndex, "=", value, 0],
+        ];
+      });
+
       return updated;
     });
   };
@@ -210,7 +237,9 @@ export default function SudokuReceiver() {
 
                         {rulesForCell.map(([r1, c1, op, r2, c2], i) => {
                           let symbol = "";
-                          if (r1 === rowIndex && c1 === cellIndex) {
+                          if (op === "=") {
+                            symbol = "";
+                          } else if (r1 === rowIndex && c1 === cellIndex) {
                             if (r2 === rowIndex + 1 && c2 === cellIndex)
                               symbol = "v";
                             else if (r2 === rowIndex - 1 && c2 === cellIndex)
