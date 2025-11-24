@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useState } from "react";
+import "./SudokuReciever.css";
 
 export default function SudokuReceiver() {
   const [activeCell, setActiveCell] = useState({ rowIndex: -1, cellIndex: -1 });
@@ -115,6 +116,7 @@ export default function SudokuReceiver() {
 
   return (
     <div
+      className="sudoku-wrapper"
       style={{
         minHeight: "100vh",
         width: "100%",
@@ -137,6 +139,7 @@ export default function SudokuReceiver() {
         }}
       >
         <h1
+          className="sudoku-title"
           style={{
             fontSize: 36,
             letterSpacing: 1,
@@ -148,10 +151,11 @@ export default function SudokuReceiver() {
           Futuristic Sudoku+ Solver
         </h1>
 
-        <div style={{ display: "flex", gap: 25 }}>
+        <div className="sudoku-main" style={{ display: "flex", gap: 25 }}>
           {/* LEFT SIDE */}
-          <div style={{ flex: 1 }}>
+          <div className="sudoku-left" style={{ flex: 1 }}>
             <div
+              className="sudoku-grid"
               style={{
                 padding: 18,
                 borderRadius: 18,
@@ -262,13 +266,22 @@ export default function SudokuReceiver() {
 
                           const posStyle = {
                             position: "absolute",
-                            fontSize: 18,
+                            fontSize: "1rem", // relative, will scale better
                             color: "#ffd24d",
-                            top: symbol === "v" ? 74 : symbol === "^" ? -6 : 30,
-                            left:
-                              symbol === ">" ? 74 : symbol === "<" ? -6 : 30,
-                            transform: "translate(-50%, -50%)",
                             textShadow: `0 0 8px ${neon}`,
+                            top:
+                              symbol === "v"
+                                ? "110%" // bottom of cell
+                                : symbol === "^"
+                                ? "-5%" // top of cell
+                                : "50%", // center
+                            left:
+                              symbol === ">"
+                                ? "110%" // right
+                                : symbol === "<"
+                                ? "-10%" // left
+                                : "50%", // center
+                            transform: "translate(-50%, -50%)",
                           };
 
                           return (
@@ -286,6 +299,7 @@ export default function SudokuReceiver() {
 
             {/* NUMBER PICKER */}
             <div
+              className="number-picker"
               style={{
                 marginTop: 20,
                 display: "flex",
@@ -320,6 +334,7 @@ export default function SudokuReceiver() {
 
             {/* MODE BUTTONS */}
             <div
+              className="mode-buttons"
               style={{
                 marginTop: 20,
                 display: "flex",
@@ -364,6 +379,7 @@ export default function SudokuReceiver() {
 
           {/* RIGHT SIDE */}
           <div
+            className="sudoku-right"
             style={{
               width: 340,
               padding: 18,
@@ -373,7 +389,7 @@ export default function SudokuReceiver() {
               backdropFilter: "blur(10px)",
             }}
           >
-            <div>
+            <div className="result-grid">
               {response.map((row, rowIndex) => (
                 <div key={rowIndex} style={{ display: "flex" }}>
                   {row.map((cell, cellIndex) => (
@@ -403,6 +419,7 @@ export default function SudokuReceiver() {
             </div>
 
             <div
+              className="action-btn"
               onClick={sendRequest}
               style={{
                 marginTop: 20,
@@ -419,6 +436,7 @@ export default function SudokuReceiver() {
               Find Solution
             </div>
             <div
+              className="action-btn"
               onClick={clearAll}
               style={{
                 marginTop: 15,
